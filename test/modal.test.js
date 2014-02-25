@@ -48,6 +48,29 @@ describe('modal', function () {
 
     })
 
+    describe('container class', function () {
+
+      it('should add extra container class if supplied', function () {
+        modal({ fx: false, containerClass: 'js-extra-class' })
+        var $el = $('.js-extra-class')
+        assert.equal($el.length, 1)
+        assert.equal($el[0].className, 'modal-content js-modal js-extra-class')
+      })
+
+      it('should not add extra container class if falsy (\'\')', function () {
+        modal({ fx: false, containerClass: '' })
+        var $el = $('.js-modal')
+        assert.equal($el[0].className, 'modal-content js-modal ')
+      })
+
+      it('should not add extra container class if falsy (false)', function () {
+        modal({ fx: false, containerClass: false })
+        var $el = $('.js-modal')
+        assert.equal($el[0].className, 'modal-content js-modal ')
+      })
+
+    })
+
     describe('content', function () {
 
       it('should render content wrapped in a <p> if passed as a string', function () {
@@ -132,11 +155,7 @@ describe('modal', function () {
     it('should centre to window height', function () {
       var m = modal({ fx: false })
       assert.equal(typeof m.centre, 'function')
-
-      // jQuery requires a bit of persuasion the window really
-      // is 1000px tall, hence these two assignments
-      window.innerHeight = document.documentElement.clientHeight = 1000
-
+      window.innerHeight = 1000
       $('.modal-content').height(100)
       assert.equal($('.modal-content').outerHeight(), 100)
       $('.modal-content').css('top', 0)
